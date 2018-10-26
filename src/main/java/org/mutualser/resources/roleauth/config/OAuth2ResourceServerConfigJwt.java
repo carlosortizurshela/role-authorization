@@ -1,6 +1,7 @@
 package org.mutualser.resources.roleauth.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -20,6 +21,9 @@ public class OAuth2ResourceServerConfigJwt extends ResourceServerConfigurerAdapt
 
     @Autowired
     private CustomAccessTokenConverter customAccessTokenConverter;
+    
+    @Value("${JWT.signingKey}")
+    private String jwtsigningKey;
 
     @Override
     public void configure(final HttpSecurity http) throws Exception {
@@ -44,16 +48,7 @@ public class OAuth2ResourceServerConfigJwt extends ResourceServerConfigurerAdapt
     public JwtAccessTokenConverter accessTokenConverter() {
         final JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
         converter.setAccessTokenConverter(customAccessTokenConverter);
-
-        converter.setSigningKey("123");
-        // final Resource resource = new ClassPathResource("public.txt");
-        // String publicKey = null;
-        // try {
-        // publicKey = IOUtils.toString(resource.getInputStream());
-        // } catch (final IOException e) {
-        // throw new RuntimeException(e);
-        // }
-        // converter.setVerifierKey(publicKey);
+        converter.setSigningKey(jwtsigningKey);
         return converter;
     }
 
