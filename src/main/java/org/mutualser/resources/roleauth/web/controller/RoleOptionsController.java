@@ -19,7 +19,7 @@ public class RoleOptionsController {
     }
 
     // API - read
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @PreAuthorize("#oauth2.hasScope('read') && hasRole('ADMIN_MUTUAL')")
     @RequestMapping(method = RequestMethod.GET, value = "/roleoptions/{role}")
     @ResponseBody
     public RoleOptions findById(@PathVariable final String role) {
